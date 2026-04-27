@@ -1,4 +1,4 @@
-from specdata import SpectroscopicData, PartitionFunction
+from .specdata import SpectroscopicData, PartitionFunction
 from astropy.table import Table
 from scipy.interpolate import interp1d
 from astropy.io import ascii
