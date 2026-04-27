@@ -28,7 +28,7 @@ def get_JPL_table(datapath):
 
 def fetch_JPL_species(datapath):
     tbl = get_JPL_table(datapath)
-    df_mol = tbl["tag", "name"].to_pandas()
+    df_mol = tbl["tag", "name"]
     df_mol["catalog"] = "JPL"
     return df_mol
 
@@ -76,7 +76,7 @@ def get_CDMS_table(datapath):
 
 def fetch_CDMS_species(datapath):
     tbl = get_CDMS_table(datapath)
-    df_mol = tbl["tag", "name"].to_pandas()
+    df_mol = tbl["tag", "name"]
     # df_mol = pd.read_csv(
     #     CDMS_PF_filename,
     #     sep='\s+', 
