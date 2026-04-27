@@ -26,10 +26,12 @@ def get_JPL_table(datapath):
     # tbl = Table(tbl_rows)
     return tbl
 
-def fetch_JPL_species(datapath):
+def fetch_JPL_species(datapath, include=None):
     tbl = get_JPL_table(datapath)
     df_mol = tbl["tag", "name"]
     df_mol["catalog"] = "JPL"
+    if include:
+        df_mol = df_mol[include in df_mol["name"]]
     return df_mol
 
 def read_JPL_partition_function(datapath, tag):
@@ -74,7 +76,7 @@ def get_CDMS_table(datapath):
     return tbl
 
 
-def fetch_CDMS_species(datapath):
+def fetch_CDMS_species(datapath, include=None):
     tbl = get_CDMS_table(datapath)
     df_mol = tbl["tag", "name"]
     # df_mol = pd.read_csv(
@@ -86,6 +88,8 @@ def fetch_CDMS_species(datapath):
     #     names=["tag", "name"]
     # )
     df_mol["catalog"] = "CDMS"
+    if include:
+        df_mol = df_mol[include in df_mol["name"]]
     return df_mol
 
 def read_CDMS_partition_function(datapath, tag):
