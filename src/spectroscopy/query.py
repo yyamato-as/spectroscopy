@@ -2,6 +2,7 @@ from .specdata import SpectroscopicData, PartitionFunction
 from astropy.table import Table
 from scipy.interpolate import interp1d
 from astropy.io import ascii
+import numpy as np
 
 def get_JPL_table(datapath):
     filename = datapath + "jpl/catdir.cat"
