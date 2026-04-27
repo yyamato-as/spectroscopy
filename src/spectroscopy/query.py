@@ -31,7 +31,8 @@ def fetch_JPL_species(datapath, include=None):
     df_mol = tbl["tag", "name"]
     df_mol["catalog"] = "JPL"
     if include:
-        df_mol = df_mol[include in df_mol["name"]]
+        mask = [include in val for val in df_mol['name']]
+        df_mol = df_mol[mask]
     return df_mol
 
 def read_JPL_partition_function(datapath, tag):
@@ -89,7 +90,8 @@ def fetch_CDMS_species(datapath, include=None):
     # )
     df_mol["catalog"] = "CDMS"
     if include:
-        df_mol = df_mol[include in df_mol["name"]]
+        mask = [include in val for val in df_mol['name']]
+        df_mol = df_mol[mask]
     return df_mol
 
 def read_CDMS_partition_function(datapath, tag):
