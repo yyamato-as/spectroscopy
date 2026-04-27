@@ -4,7 +4,7 @@ from scipy.interpolate import interp1d
 from astropy.io import ascii
 
 def get_JPL_table(datapath):
-    filename = datapath + "catdir.cat"
+    filename = datapath + "jpl/catdir.cat"
     with open(filename, "r") as f:
         data = f.read()
 
@@ -41,7 +41,7 @@ def read_JPL_partition_function(datapath, tag):
     return temps[~np.isnan(Qvals)], 10 ** Qvals[~np.isnan(Qvals)]
 
 def get_CDMS_table(datapath):
-    filename = datapath + "partition_function.dat"
+    filename = datapath + "cdms/partition_function.dat"
     with open(filename, "r") as f:
         data = f.read()
 
