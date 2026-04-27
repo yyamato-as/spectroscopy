@@ -3,12 +3,8 @@ from astropy.table import Table
 from scipy.interpolate import interp1d
 from astropy.io import ascii
 
-pf_filename = {
-    "JPL": "./database/catdir.cat",
-    "CDMS": "./database/partition_function.dat"
-}
-
-def get_JPL_table(filename):
+def get_JPL_table(datapath):
+    filename = datapath + "catdir.cat"
     with open(filename, "r") as f:
         data = f.read()
 
@@ -29,14 +25,14 @@ def get_JPL_table(filename):
     # tbl = Table(tbl_rows)
     return tbl
 
-def fetch_JPL_species():
-    tbl = get_JPL_table(JPL_PF_filename)
+def fetch_JPL_species(datapath):
+    tbl = get_JPL_table(datapath)
     df_mol = tbl["tag", "name"].to_pandas()
     df_mol["catalog"] = "JPL"
     return df_mol
 
-def read_JPL_partition_function(filename, tag):
-    tbl = get_JPL_table(filename)
+def read_JPL_partition_function(datapath, tag):
+    tbl = get_JPL_table(datapath)
 
     temps = np.array([300, 225, 150, 75, 37.5, 18.75, 9.375])
     Qvals = tbl[tbl["tag"] == tag]
@@ -44,7 +40,8 @@ def read_JPL_partition_function(filename, tag):
     # print(tbl)
     return temps[~np.isnan(Qvals)], 10 ** Qvals[~np.isnan(Qvals)]
 
-def get_CDMS_table(filename):
+def get_CDMS_table(datapath):
+    filename = datapath + "partition_function.dat"
     with open(filename, "r") as f:
         data = f.read()
 
@@ -76,8 +73,8 @@ def get_CDMS_table(filename):
     return tbl
 
 
-def fetch_CDMS_species():
-    tbl = get_CDMS_table(CDMS_PF_filename)
+def fetch_CDMS_species(datapath):
+    tbl = get_CDMS_table(datapath)
     df_mol = tbl["tag", "name"].to_pandas()
     # df_mol = pd.read_csv(
     #     CDMS_PF_filename,
@@ -90,8 +87,8 @@ def fetch_CDMS_species():
     df_mol["catalog"] = "CDMS"
     return df_mol
 
-def read_CDMS_partition_function(filename, tag):
-    tbl = get_CDMS_table(filename)
+def read_CDMS_partition_function(datapath, tag):
+    tbl = get_CDMS_table(datapath)
     # print(tbl)
 
     temps = np.array([1000, 500, 300, 225, 150, 75, 37.5, 18.75, 9.375, 5.000, 2.725])
@@ -104,7 +101,7 @@ def fetch_specdata(species, tag, catalog, datapath="./data/", nurange=None):
 
     # parittion function
     read_pf = read_CDMS_partition_function if catalog == "CDMS" else read_JPL_partition_function
-    T, Q = read_pf(pf_filename[catalog], int(tag))
+    T, Q = read_pf(datapath, int(tag))
     if len(T) <= 3:
         func = interp1d(T, Q, fill_value="extrapolate")
         T = np.array([1000, 500, 300, 225, 150, 75, 37.5, 18.75, 9.375, 5.000, 2.725])
